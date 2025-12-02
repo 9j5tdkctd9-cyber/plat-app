@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Carnet de Recettes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍳 Mon Carnet Gourmand</h1>
+        </header>
+        
+        <main class="home-page" id="homePage">
+            <div class="menu-cards">
+                <div class="menu-card" onclick="showPage('recettesPage')">
+                    <span class="card-icon">📖</span>
+                    <h2>Mes Recettes</h2>
+                </div>
+                <div class="menu-card" onclick="showPage('repasPrevusPage')">
+                    <span class="card-icon">📅</span>
+                    <h2>Repas Prévus</h2>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Page Recettes -->
+        <div class="page hidden" id="recettesPage">
+            <button class="back-btn" onclick="showPage('homePage')">← Retour</button>
+            <button class="edit-btn" onclick="showAddRecipe()">+ Ajouter</button>
+            <div class="category-nav">
+                <button onclick="showCategory('matin')">🌅 Matin</button>
+                <button onclick="showCategory('repas')">🍽️ Repas</button>
+                <button onclick="showCategory('brunch')">🥐 Brunch</button>
+                <button onclick="showCategory('gourmandise')">🍰 Gourmandise</button>
+            </div>
+        </div>
+        
+        <!-- Pages Catégories -->
+        <div class="page hidden" id="categoryPage">
+            <button class="back-btn" onclick="showPage('recettesPage')">← Retour</button>
+            <h2 id="categoryTitle"></h2>
+            <div class="recipe-grid" id="recipeGrid"></div>
+        </div>
+        
+        <!-- Page Détails Recette -->
+        <div class="page hidden" id="recipeDetailPage">
+            <button class="back-btn" onclick="backToCategory()">← Retour</button>
+            <div id="recipeDetail"></div>
+        </div>
+        
+        <!-- Page Repas Prévus -->
+        <div class="page hidden" id="repasPrevusPage">
+            <button class="back-btn" onclick="showPage('homePage')">← Retour</button>
+            <h2>Planning de la Semaine</h2>
+            <div class="meal-planner" id="mealPlanner"></div>
+        </div>
+        
+        <!-- Modal Ajout Recette -->
+        <div class="modal hidden" id="addRecipeModal">
+            <div class="modal-content">
+                <h3>Ajouter une Recette</h3>
+                <form id="recipeForm">
+                    <input type="text" id="recipeName" placeholder="Nom de la recette" required>
+                    <select id="recipeCategory" required>
+                        <option value="">Catégorie</option>
+                        <option value="matin">Matin</option>
+                        <option value="repas">Repas</option>
+                        <option value="brunch">Brunch</option>
+                        <option value="gourmandise">Gourmandise</option>
+                    </select>
+                    <input type="url" id="recipeImage" placeholder="URL de l'image">
+                    <textarea id="recipeIngredients" placeholder="Ingrédients (un par ligne)" rows="5"></textarea>
+                    <textarea id="recipeSteps" placeholder="Étapes de préparation" rows="5"></textarea>
+                    <div class="modal-buttons">
+                        <button type="submit">Enregistrer</button>
+                        <button type="button" onclick="closeModal()">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
