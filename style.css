@@ -65,6 +65,23 @@ header h1 {
 
 /* Navigation et boutons */
 .back-btn, .edit-btn {
+    background: #87CEEB;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 10px 10px 10px 0;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover, .edit-btn:hover {
+    background: #6BAED6;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
     background: #d97d92;
     color: white;
     border: none;
@@ -73,11 +90,12 @@ header h1 {
     cursor: pointer;
     font-size: 1em;
     margin: 10px 10px 10px 0;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.back-btn:hover, .edit-btn:hover {
+.delete-btn:hover {
     background: #c56b80;
+    transform: translateY(-2px);
 }
 
 .category-nav {
@@ -117,12 +135,15 @@ header h1 {
     border-radius: 20px;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    border: 2px solid transparent;
 }
 
 .recipe-card:hover {
     transform: scale(1.05);
+    border-color: #87CEEB;
 }
 
 .recipe-card img {
@@ -137,12 +158,38 @@ header h1 {
     color: #d97d92;
 }
 
+.recipe-card-delete {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d97d92;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.recipe-card-delete:hover {
+    background: #c56b80;
+    transform: scale(1.1);
+}
+
 /* Détails de recette */
 #recipeDetail {
     background: white;
     border-radius: 25px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #87CEEB;
 }
 
 #recipeDetail img {
@@ -174,12 +221,20 @@ header h1 {
     border-bottom: 1px solid #ffeef3;
 }
 
+#recipeDetail li:before {
+    content: "• ";
+    color: #87CEEB;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
 /* Planning des repas */
 .meal-planner {
     background: white;
     border-radius: 25px;
     padding: 20px;
     overflow-x: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .meal-planner table {
@@ -205,11 +260,11 @@ header h1 {
 }
 
 .meal-planner td:hover {
-    background: #fff5f7;
+    background: #E6F7FF;
 }
 
 .meal-item {
-    background: #fab387;
+    background: linear-gradient(135deg, #fab387, #87CEEB);
     color: white;
     padding: 8px;
     border-radius: 10px;
@@ -237,6 +292,14 @@ header h1 {
     border-radius: 25px;
     max-width: 500px;
     width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-top: 4px solid #87CEEB;
+}
+
+.modal-content h3 {
+    color: #d97d92;
+    margin-bottom: 20px;
 }
 
 .modal-content input, .modal-content textarea, .modal-content select {
@@ -246,6 +309,23 @@ header h1 {
     border: 2px solid #ffeef3;
     border-radius: 10px;
     font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.modal-content input:focus, .modal-content textarea:focus, .modal-content select:focus {
+    outline: none;
+    border-color: #87CEEB;
+}
+
+.modal-content input[type="file"] {
+    border: 2px dashed #fab387;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.modal-content input[type="file"]:hover {
+    border-color: #87CEEB;
 }
 
 .modal-buttons {
@@ -264,12 +344,20 @@ header h1 {
 }
 
 .modal-buttons button[type="submit"] {
-    background: #d97d92;
+    background: #87CEEB;
     color: white;
+}
+
+.modal-buttons button[type="submit"]:hover {
+    background: #6BAED6;
 }
 
 .modal-buttons button[type="button"] {
     background: #e0e0e0;
+}
+
+.modal-buttons button[type="button"]:hover {
+    background: #bdbdbd;
 }
 
 /* Utilitaires */
