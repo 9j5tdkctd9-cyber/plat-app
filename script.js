@@ -33,6 +33,16 @@ function backToCategory() {
     showCategory(currentCategory);
 }
 
+// Conversion image en Base64
+function convertToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
 // Affichage des recettes
 function displayRecipes(category) {
     const grid = document.getElementById('recipeGrid');
@@ -40,7 +50,8 @@ function displayRecipes(category) {
     
     grid.innerHTML = categoryRecipes.map(recipe => `
         <div class="recipe-card" onclick="showRecipeDetail(${recipe.id})">
-            <img src="${recipe.image || 'https://via.placeholder.com/200x180/fab387/ffffff?text=Recette'}" alt="${recipe.name}">
+            <button class="recipe-card-delete" onclick="event.stopPropagation(); deleteRecipe(${recipe.id})" title="Supprimer">×</button>
+            <img src="${recipe.image || 'https://via.placeholder.com/200x180/2196F3/ffffff?text=Recette'}" alt="${recipe.name}">
             <h3>${recipe.name}</h3>
         </div>
     `).join('');
@@ -51,8 +62,9 @@ function showRecipeDetail(recipeId) {
     const detail = document.getElementById('recipeDetail');
     
     detail.innerHTML = `
-        <img src="${recipe.image || 'https://via.placeholder.com/400/fab387/ffffff?text=' + recipe.name}" alt="${recipe.name}">
+        <img src="${recipe.image || 'https://via.placeholder.com/400/2196F3/ffffff?text=' + recipe.name}" alt="${recipe.name}">
         <h2>${recipe.name}</h2>
+        <button class="delete-btn" onclick="deleteRecipeFromDetail(${recipe.id})">🗑️ Supprimer cette recette</button>
         <h3>📝 Ingrédients</h3>
         <ul>
             ${recipe.ingredients.map(ing => `<li>• ${ing}</li>`).join('')}
@@ -65,6 +77,23 @@ function showRecipeDetail(recipeId) {
     showPage('recipeDetailPage');
 }
 
+// Suppression de recettes
+function deleteRecipe(recipeId) {
+    if (confirm('Voulez-vous vraiment supprimer cette recette ?')) {
+        recipes = recipes.filter(r => r.id !== recipeId);
+        localStorage.setItem('recipes', JSON.stringify(recipes));
+        displayRecipes(currentCategory);
+    }
+}
+
+function deleteRecipeFromDetail(recipeId) {
+    if (confirm('Voulez-vous vraiment supprimer cette recette ?')) {
+        recipes = recipes.filter(r => r.id !== recipeId);
+        localStorage.setItem('recipes', JSON.stringify(recipes));
+        backToCategory();
+    }
+}
+
 // Gestion des recettes
 function showAddRecipe() {
     document.getElementById('addRecipeModal').classList.remove('hidden');
@@ -75,14 +104,27 @@ function closeModal() {
     document.getElementById('recipeForm').reset();
 }
 
-document.getElementById('recipeForm').addEventListener('submit', (e) => {
+document.getElementById('recipeForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    const imageFile = document.getElementById('recipeImage').files[0];
+    let imageBase64 = '';
+    
+    if (imageFile) {
+        try {
+            imageBase64 = await convertToBase64(imageFile);
+        } catch (error) {
+            console.error('Erreur lors de la conversion de l\'image:', error);
+            alert('Erreur lors du chargement de l\'image');
+            return;
+        }
+    }
     
     const newRecipe = {
         id: Date.now(),
         name: document.getElementById('recipeName').value,
         category: document.getElementById('recipeCategory').value,
-        image: document.getElementById('recipeImage').value,
+        image: imageBase64,
         ingredients: document.getElementById('recipeIngredients').value.split('\n').filter(i => i.trim()),
         steps: document.getElementById('recipeSteps').value
     };
